@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>페이지 뷰어</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #pageViewer {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">페이지를 불러오는 중...</div>
+    <iframe id="pageViewer" style="display: none;"></iframe>
+
+    <script>
+        async function loadPageFromGitHub() {
+            try {
+                const response = await fetch('https://your-username.github.io/your-repo/url-data.json?t=' + Date.now());
+                const data = await response.json();
+
+                if (data.url) {
+                    loadPage(data.url);
+                }
+            } catch (error) {
+                console.log('URL을 가져올 수 없습니다:', error);
+                checkUrlParams();
+            }
+        }
+
+        function checkUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const url = urlParams.get('url');
+
+            if (url) {
+                loadPage(decodeURIComponent(url));
+            }
+        }
+
+        function loadPage(url) {
+            const iframe = document.getElementById('pageViewer');
+            const loading = document.getElementById('loading');
+
+            iframe.onload = () => {
+                loading.style.display = 'none';
+                iframe.style.display = 'block';
+            };
+
+            iframe.src = url;
+        }
+
+        // 페이지 로드 시 한 번만 실행
+        loadPageFromGitHub();
+    </script>
+</body>
+</html>
