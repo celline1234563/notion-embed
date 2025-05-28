@@ -1,1 +1,49 @@
-{\"url\": \"https://marketingdiet.notion.site/1ec6efb12186802ea7aee6f0c485da2b?pvs=4\"}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>데이터 페이지</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .notion-container {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <iframe 
+        id="notion-iframe"
+        class="notion-container"
+        src=""
+        frameborder="0">
+    </iframe>
+
+    <script>
+        // URL에서 노션 URL 파라미터 추출
+        function getNotionUrlFromParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('notion_url') || 'https://www.notion.so/default-page';
+        }
+
+        // 페이지 로드 시 노션 페이지 설정
+        window.onload = function() {
+            const notionUrl = getNotionUrlFromParams();
+            document.getElementById('notion-iframe').src = notionUrl;
+        };
+    </script>
+</body>
+</html>
