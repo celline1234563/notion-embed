@@ -119,7 +119,14 @@
             const iframe = document.getElementById('pageViewer');
             const loading = document.getElementById('loading');
             
-            loading.innerHTML = '페이지를 불러오는 중...';
+            // 기존과 같은 URL이면 깜빡거림 방지
+            if (iframe.src === url) {
+                return;
+            }
+            
+            loading.innerHTML = '새 페이지를 불러오는 중...';
+            loading.style.display = 'block';
+            iframe.style.display = 'none';
             
             iframe.src = url;
             
@@ -138,8 +145,8 @@
         // 페이지 로드시 실행
         findAndLoadPage();
         
-        // 10초마다 새로운 페이지 확인 (실시간 업데이트)
-        setInterval(findAndLoadPage, 10000);
+        // 30초마다 새로운 페이지 확인 (URL 바뀔때만 업데이트)
+        setInterval(findAndLoadPage, 30000);
     </script>
 </body>
 </html>
