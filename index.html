@@ -1,1 +1,70 @@
-{\"url\": \"  노션 임베드 HTML 대화형 아티팩트  완료! 노션 페이지를 전체 화면으로 임베드하는 HTML입니다.      {"name":"index.html","path":"index.html","sha":"5a9f59f958f0806085bdb7cabc33819ad6a6c1a3","size":87,"url":"https://api.github.com/repos/celline1234563/notion-embed/contents/index.html?ref=main","html_url":"https://github.com/celline1234563/notion-embed/blob/main/index.html","git_url":"https://api.github.com/repos/celline1234563/notion-embed/git/blobs/5a9f59f958f0806085bdb7cabc33819ad6a6c1a3","download_url":"https://raw.githubusercontent.com/celline1234563/notion-embed/main/index.html","type":"file","content":"e1widXJsXCI6IFwiaHR0cHM6Ly9tYXJrZXRpbmdkaWV0Lm5vdGlvbi5zaXRl\nLzFlYzZlZmIxMjE4NjgwMmVhN2FlZTZmMGM0ODVkYTJiP3B2cz00XCJ9\n","encoding":"base64","_links":{"self":"https://api.github.com/repos/celline1234563/notion-embed/contents/index.html?ref=main","git":"https://api.github.com/repos/celline1234563/notion-embed/git/blobs/5a9f59f958f0806085bdb7cabc33819ad6a6c1a3","html":"https://github.com/celline1234563/notion-embed/blob/main/index.html"}}  fileSize  956  <!DOCTYPE html> <html lang="ko"> <head>     <meta charset="UTF-8">     <meta name="viewport" content="width=device-width, initial-scale=1.0">     <title>페이지 뷰어</title>     <style>         * {             margin: 0;             padding: 0;             box-sizing: border-box;         }          html, body {             height: 100%;             overflow: hidden;         }          iframe {             width: 100vw;             height: 100vh;             border: none;         }     </style> </head> <body>     <iframe src="https://marketingdiet.notion.site/ebd/1ec6efb12186802ea7aee6f0c485da2b" allowfullscreen></iframe> </body> </html>\"}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>페이지 뷰어</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #pageViewer {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">페이지를 불러오는 중...</div>
+    <iframe id="pageViewer" style="display: none;"></iframe>
+
+    <script>
+        async function loadPage() {
+            try {
+                const response = await fetch('./notion_embed_page.html?t=' + Date.now());
+                const text = await response.text();
+                
+                // JSON에서 URL 추출
+                const match = text.match(/"url":\s*"([^"]+)"/);
+                
+                if (match) {
+                    const url = match[1];
+                    const iframe = document.getElementById('pageViewer');
+                    const loading = document.getElementById('loading');
+                    
+                    iframe.src = url;
+                    
+                    iframe.onload = () => {
+                        loading.style.display = 'none';
+                        iframe.style.display = 'block';
+                    };
+                }
+            } catch (error) {
+                console.log('에러:', error);
+            }
+        }
+
+        // 페이지 로드시 실행
+        loadPage();
+    </script>
+</body>
+</html>
